@@ -14,6 +14,24 @@ const addEntries = (req,res)=>{
     })
 }
 
+const updateEntry = (req,res)=>{
+    const {id} = req.params;
+    const {name} = req.body;
+    const updateQuery = `update Users set name=? where id=?`
+    db.execute(updateQuery,[name,id],(err,result)=>{
+        if(err){
+            res.status(500).send(err.message);
+            db.end();
+            return;
+        }
+        if(result.affectedRows===0){
+            res.status(404).send("User not found!");
+            return;
+        }
+        res.status(200).send("User updated successfully");
+    })
+}
+
 module.exports = {
-    addEntries
+    addEntries,updateEntry
 }
