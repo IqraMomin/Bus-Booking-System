@@ -32,6 +32,23 @@ const updateEntry = (req,res)=>{
     })
 }
 
+const deleteEntry = (req,res)=>{
+    const {id} = req.params;
+    const deleteQuery = `delete from Users where id=?`;
+    db.execute(deleteQuery,[id],(err,result)=>{
+        if(err){
+            res.status(500).send(err.message);
+            db.end();
+            return;
+        }
+        if(result.affectedRows===0){
+            res.status(404).send("User not found!");
+            return;
+        }
+        res.status(200).send("User deleted successfully");
+    })
+}
+
 module.exports = {
-    addEntries,updateEntry
+    addEntries,updateEntry,deleteEntry
 }
