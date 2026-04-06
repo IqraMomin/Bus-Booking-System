@@ -14,6 +14,18 @@ const addEntries = (req,res)=>{
     })
 }
 
+const getUsers = (req,res)=>{
+    const getQuery = `select name,email from Users`;
+    db.execute(getQuery,(err,results)=>{
+        if(err){
+            res.status(500).send(err.message);
+            db.end();
+            return;
+        }
+        res.send(results)
+    })
+}
+
 const updateEntry = (req,res)=>{
     const {id} = req.params;
     const {name} = req.body;
@@ -50,5 +62,5 @@ const deleteEntry = (req,res)=>{
 }
 
 module.exports = {
-    addEntries,updateEntry,deleteEntry
+    addEntries,updateEntry,deleteEntry,getUsers
 }
